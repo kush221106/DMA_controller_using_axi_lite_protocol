@@ -1,0 +1,42 @@
+module fifo(
+    input clk,
+    input reset,
+
+    input wr_en,
+    input [31:0] wr_data,
+
+    input rd_en,
+    output reg [31:0] rd_data,
+    output fifo_empty
+);
+  
+    reg [31:0] mem [0:15];
+    reg [3:0] wr_ptr;
+    reg [3:0] rd_ptr;
+    reg [4:0] count;  // give the number of words
+
+    // write oprn
+    always @(negedge clk)
+    begin
+        if(reset) begin wr_ptr <= 4'd0; count<=5'd0;end
+        else if(wr_en)
+           begin
+            mem[wr_ptr] <= wr_data;
+            wr_ptr <= (wr_ptr + 1) ;
+            count <= count +1;
+           end
+    end
+
+    // read oprn
+    always @(posedge clk)
+    begin
+        if(reset)begin rd_ptr <=4'd0;count<=5'd0;end
+        else if(rd_en && !fifo_empty)
+           begin
+              rd_data <= mem[rd_ptr];
+              rd_ptr <= (rd_ptr+1)  ;
+              count <= count -1;
+           end
+    end
+    assign fifo_empty = (count==5'd0);
+endmodule
