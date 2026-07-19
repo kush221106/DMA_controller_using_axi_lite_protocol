@@ -36,7 +36,7 @@ write w( clk,
      AWVALID,
      WSTRB,
      done);
-zizo zizo(clk,
+fifo zizo(clk,
     reset,
     wr_en,
     rdata_out,
