@@ -2,7 +2,7 @@
 `include "write.v"
 `include "fifo.v" 
 
-module top_module(input clk,input reset,input trigger,input [4:0]length,input [31:0] source_address,input [31:0] destination_address,output done,input ARREADY,input [31:0] RDATA,input RVALID,input AWREADY,input WREADY,input BVALID,output [31:0] ARADDR,output ARVALID,output RREADY,output [31:0] AWADDR,output AWVALID,output [31:0] WDATA,output WVALID,output BREADY);
+module top(input clk,input reset,input trigger,input [4:0]length,input [31:0] source_address,input [31:0] destination_address,output done,input ARREADY,input [31:0] RDATA,input RVALID,input AWREADY,input WREADY,input BVALID,output [31:0] ARADDR,output ARVALID,output RREADY,output [31:0] AWADDR,output AWVALID,output [31:0] WDATA,output WVALID,output BREADY,output [3:0] WSTRB);
 wire [31:0] rdata_out,writedata_in;
 wire wr_en,rd_en,fifo_empty;
 read r(clk,
@@ -33,8 +33,10 @@ write w( clk,
      rd_en,
      BREADY,
      WVALID,
-     AWVALID);
-fifo zizo(clk,
+     AWVALID,
+     WSTRB,
+     done);
+zizo zizo(clk,
     reset,
     wr_en,
     rdata_out,
