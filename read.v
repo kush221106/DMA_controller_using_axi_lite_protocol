@@ -60,7 +60,7 @@ module read(
             s4 : begin
                 if(inter_len == 0) next_state = s5;
                 else if(trackR1 == 0) next_state = s1;
-                else next_state = s2;
+                else next_state = s3;
             end
             s5 : next_state = s5;
             default: 
